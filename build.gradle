@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "io.freefair.lombok" version "6.3.0"
+}
+
+group 'io.pivotal.gpdb'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'ml.dmlc:xgboost4j_2.12:1.5.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2'
+    implementation files('libs/pljava.jar')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testImplementation 'org.postgresql:postgresql:42.3.3'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileJava {
+    options.compilerArgs << "-parameters"
+}
+
+shadowJar {
+    archiveBaseName.set("xgboost-udf")
+    archiveClassifier.set("")
+    destinationDirectory = file("extensions")
+    exclude 'pljava.jar'
+}
+
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: "java"
