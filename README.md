@@ -96,7 +96,7 @@ WITH dataset(data, labels) AS (
 	SELECT
 		-- the predict functions returns a row containing a single column of type real[] called "prediction".
 		-- each element in the array is a prediction for the corresponding datapoint in the feature arrays.
-		(xgboost.predict(model, data, false /* outputMargin */, 0 /* treeLimit */)).prediction[0] predicted,
+		(xgboost.predict(model, data, false /* outputMargin */, 0 /* treeLimit */)).prediction[1] predicted,
 		unnest(labels) lbl
 	FROM models, dataset
 )
